@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import ArticlesList from "@/components/article/ArticlesList.vue";
 </script>
 
 <template>
@@ -15,6 +16,7 @@
         </p>
       </div>
     </div>
+    <ArticlesList/>
   </div>
 </template>
 
