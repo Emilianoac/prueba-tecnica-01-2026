@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { Icon } from "@iconify/vue";
 import fakeComments from "@/constants/fakeComments";
+import { usePageTitle } from "@/composables/usePageTitle";
 import { useArticlesStore } from "@/stores/articles.store";
 import ArticleCommentList from "@/components/article/ArticleCommentList.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 import ArticleRelatedList from "@/components/article/ArticleRelatedList.vue";
 
 const store = useArticlesStore();
+
+const dynamicTitle = computed(() => store.selectedArticle?.title);
+usePageTitle(dynamicTitle);
 </script>
 
 <template>

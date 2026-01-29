@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+  import { usePageTitle } from "@/composables/usePageTitle";
   import ArticlesList from "@/components/article/ArticlesList.vue";
   import BrandPet from "@/components/illustrations/BrandPet.vue";
+
+  usePageTitle("Lista de Artículos");
 </script>
 
 <template>
