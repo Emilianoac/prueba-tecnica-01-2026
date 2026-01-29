@@ -25,7 +25,13 @@ export const useArticlesStore = defineStore("articles", {
 
     numberOfArticles(): number {
       return this.filteredArticles.length;
-    }
+    },
+
+    relatedArticles: (state) => {
+      if (!state.selectedArticle) return [];
+    
+      return state.articles.filter(article => article.id !== state.selectedArticle?.id).slice(0, 3);
+    },
   },
 
   actions: {
