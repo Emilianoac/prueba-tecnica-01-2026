@@ -1,48 +1,110 @@
-# prueba-tecnica-02-2026
+# Prueba Técnica
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplicación desarrollada con **Vue 3** y **TypeScript** como prueba técnica. El proyecto ha sido diseñado priorizando la solidez en el manejo del estado global y una estrategia de testing integral.
 
-## Recommended IDE Setup
+La aplicación permite listar artículos, realizar búsquedas con persistencia de estado y visualizar detalles específicos de cada elemento.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Previsualización: https://emilianoac.github.io/prueba-tecnica-01-2026
 
-## Recommended Browser Setup
+---
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Funcionalidad
+* **Listado de artículos:** Consumo de datos desde una API externa.
+* **Vista de detalle:** Visualización específica de cada artículo seleccionado.
+* **Gestión de estados:** Control de estados de carga y error.
+* **Persistencia de búsqueda:** El estado de los filtros se mantiene íntegro al navegar entre vistas.
+* **Navegación por estado:** Cambio de vistas controlado mediante lógica de estado global.
 
-## Type Support for `.vue` Imports in TS
+---
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Stack Tecnológico
+Durante el desarrollo se respetaron estrictamente las tecnologías mencionadas en el documento de la prueba técnica.  
+Por este motivo no se incorporaron dependencias adicionales que no estuvieran explícitamente solicitadas, como Vue Router.
 
-## Customize configuration
+* **Core:** Vue 3
+* **Lenguaje:** TypeScript
+* **Estado:** Pinia
+* **Comunicación:** Axios
+* **Estilos:** TailwindCSS
+* **Testing:** Vitest, Vue Test Utils y MSW (Mock Service Worker)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+---
 
-## Project Setup
+## Estructura del Proyecto
 
-```sh
-npm install
+```text
+src/
+├── assets/           # Recursos estáticos (CSS, Imágenes)
+├── components/       # Componentes por dominio (Article, UI, Illustrations)
+├── composables/      # Lógica de estado y funciones reutilizables
+├── config/           # Configuración global de la aplicación
+├── constants/        # Constantes y valores fijos
+├── services/         # Abstracción de red (API Services)
+├── stores/           # Gestión de estado global con Pinia
+├── types/            # Definiciones de interfaces y tipos TypeScript
+├── views/            # Vistas principales
+├── tests/            # Suite completa de pruebas (__tests__)
+│   ├── mocks/        # Datos falsos y configuraciones de MSW
+│   ├── integration/  # Tests de integración por componente y vista
+│   └── unit/         # Tests unitarios (Stores, Services, Composables)
+├── App.vue           # Componente raíz de la aplicación
+└── main.ts           # Punto de entrada y configuración de Vue
 ```
+---
 
-### Compile and Hot-Reload for Development
+## Instalación y Configuración
 
-```sh
-npm run dev
-```
+Siga estos pasos para ejecutar el proyecto localmente:
 
-### Type-Check, Compile and Minify for Production
+1. **Clonar el repositorio:**
 
-```sh
-npm run build
-```
+   ```bash
+   git clone https://github.com/Emilianoac/prueba-tecnica-01-2026.git
+   ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+2. **Instalar dependencias:**
 
-```sh
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno:** El proyecto incluye un archivo `.env.example`. Debe crear un archivo `.env` en la raíz del proyecto basándose en este:
+
+   ```bash
+   cp .env.example .env
+   ```
+   Asegúrate de que la variable `VITE_API_URL` esté correctamente configurada:
+   
+    ```bash
+    VITE_API_URL=https://jsonplaceholder.typicode.com
+    ```
+3. **Ejecutar en modo desarrollo:**
+
+    ```bash
+    npm run dev
+    ```
+---
+
+## Testing
+
+El proyecto aplica una estrategia de pruebas organizada por niveles para asegurar la estabilidad del sistema:
+
+### Tests Unitarios
+Enfoque en la lógica aislada de Stores, Services y Composables.
+
+```bash
 npm run test:unit
+```
+
+### Tests Intregración
+Validación de flujos de usuario reales y comunicación entre componentes utilizando MSW para interceptar peticiones de red.
+
+```bash
+npm run test:integration
+```
+
+### Para ejecutar la suite completa de pruebas
+
+```bash
+npm run test
 ```
