@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import ArticlesList from "@/components/article/ArticlesList.vue";
+  import BrandPet from "@/components/illustrations/BrandPet.vue";
 </script>
 
 <template>
@@ -15,6 +16,7 @@
           Encuentra los últimos artículos, consejos y tutoriales para mantenerte al día.
         </p>
       </div>
+      <BrandPet class="max-w-[260px] md:max-w-[360px]"/>
     </div>
     <ArticlesList/>
   </div>
