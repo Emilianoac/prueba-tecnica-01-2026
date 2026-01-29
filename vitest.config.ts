@@ -15,7 +15,7 @@ export default mergeConfig(
         'src/__tests__/_integration/**/*.{test,spec}.ts'
       ],
       globals: true,
-      setupFiles: []
+      setupFiles: ['src/__tests__/setupTests.ts']
     },
   }),
 )
