@@ -46,6 +46,7 @@ onMounted(() => {
     </p>
 
     <MainPagination
+      v-if="store.articles.length > 0"
       class="mx-auto lg::ms-auto lg:me-0 my-5"
       :current-page="localPage" 
       :total-pages="store.totalPages"
@@ -86,6 +87,7 @@ onMounted(() => {
       </div>
       </div>
       <MainPagination
+        v-if="store.articles.length > 0"
         class="mx-auto lg:ms-auto lg:me-0 my-5"
         :current-page="localPage" 
         :total-pages="store.totalPages"
