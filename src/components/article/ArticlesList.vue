@@ -46,7 +46,7 @@ onMounted(() => {
     </p>
 
     <MainPagination
-      class="ms-auto me-0 my-5"
+      class="mx-auto lg::ms-auto lg:me-0 my-5"
       :current-page="localPage" 
       :total-pages="store.totalPages"
       :info-text="rangeText"
@@ -86,7 +86,7 @@ onMounted(() => {
       </div>
       </div>
       <MainPagination
-        class="ms-auto me-0 my-5"
+        class="mx-auto lg:ms-auto lg:me-0 my-5"
         :current-page="localPage" 
         :total-pages="store.totalPages"
         :info-text="rangeText"
