@@ -9,10 +9,6 @@ import ArticleDetailView from "@/views/ArticleDetailView.vue";
 
 const store = useArticlesStore();
 
-onMounted(() => {
-  store.fetchArticles();
-})
-
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 };

@@ -1,12 +1,33 @@
 <script setup lang="ts">
+import { computed, onMounted } from "vue";
+import { storeToRefs } from "pinia";
 import { useArticlesStore } from "@/stores/articles.store";
+import { usePagination } from "@/composables/usePagination";
 import SearchBar from "@/components/ui/SearchBar.vue";
 import ErrorAlert from "@/components/ui/ErrorAlert.vue";
 import LoadingSpinner from "@/components/ui/LoadingSpinner.vue";
 import LoadingOverlay from "@/components/ui/LoadingOverlay.vue";
 import ArticleCard from "@/components/article/ArticleCard.vue";
+import MainPagination from "../ui/MainPagination.vue";
 
 const store = useArticlesStore();
+const { currentPage, totalPages, itemsPerPage, totalItems } = storeToRefs(store);
+
+const { localPage, changePage } = usePagination({
+  externalPage:currentPage,
+  totalPages: totalPages,
+  onPageChange: (page) => store.loadArticles(page)
+});
+
+const rangeText = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value + 1;
+  const end = Math.min(currentPage.value * itemsPerPage.value, totalItems.value);
+  return `${start} - ${end} de ${totalItems.value} registros`;
+});
+
+onMounted(() => {
+  store.loadArticles(1);
+})
 </script>
 
 <template>
@@ -17,8 +38,20 @@ const store = useArticlesStore();
       @reset="store.resetSearch" 
       class="w-full"
     />    
-    <p class="text-sm mt-2 mb-6 text-end"><strong>{{ store.numberOfArticles }}</strong> Artículos encontrados</p>
+    <p 
+      v-if="store.search" 
+      data-test="search-result-info"
+      class="text-sm mt-2 mb-6 text-end">
+       Artículos encontrados en esta página: <strong>{{ store.numberOfArticles }}</strong>
+    </p>
 
+    <MainPagination
+      class="ms-auto me-0 my-5"
+      :current-page="localPage" 
+      :total-pages="store.totalPages"
+      :info-text="rangeText"
+      @change="changePage"
+    />
     <div class="relative min-h-[200px]">
       <!-- Error -->
       <ErrorAlert v-if="store.error" :message="store.error" />
@@ -51,6 +84,13 @@ const store = useArticlesStore();
           </div>
         </template>
       </div>
-    </div>
+      </div>
+      <MainPagination
+        class="ms-auto me-0 my-5"
+        :current-page="localPage" 
+        :total-pages="store.totalPages"
+        :info-text="rangeText"
+        @change="changePage"
+      />
   </div>
 </template>

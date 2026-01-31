@@ -1,4 +1,3 @@
-import { nextTick } from "vue";
 import { describe, it, expect, afterEach } from "vitest";
 import { mount, flushPromises } from "@vue/test-utils";
 import { http, HttpResponse, delay } from "msw";
@@ -27,11 +26,8 @@ describe("ArticlesList - Integración", () => {
       );
 
       const wrapper = mount(ArticleList);
-      const store = useArticlesStore();
 
-      store.fetchArticles();
-
-      await nextTick();
+      await flushPromises();
 
       const spinner = wrapper.find('[data-test="loading-spinner"]');
 
@@ -45,22 +41,17 @@ describe("ArticlesList - Integración", () => {
       server.use(http.get("*/posts", () => HttpResponse.json(mockArticles)));
       
       const wrapper = mount(ArticleList);
-      const store = useArticlesStore();
       
-      await store.fetchArticles();
       await flushPromises();
 
       const cards = wrapper.findAll('[data-test="article-card"]');
       expect(cards).toHaveLength(3);
-      expect(wrapper.text()).toContain("3 Artículos encontrados");
     });
 
     it("debería filtrar artículos dinámicamente mediante la SearchBar", async () => {
       server.use(http.get("*/posts", () => HttpResponse.json(mockArticles)));
       
       const wrapper = mount(ArticleList);
-      const store = useArticlesStore();
-      await store.fetchArticles();
       await flushPromises();
 
       const searchInput = wrapper.find('[data-test="search-input"]');
@@ -69,14 +60,15 @@ describe("ArticlesList - Integración", () => {
       const cards = wrapper.findAll('[data-test="article-card"]');
       expect(cards).toHaveLength(1);
       expect(cards[0]!.text()).toContain("Artículo 1");
+
+      const searchResultInfo = wrapper.find('[data-test="search-result-info"]');
+      expect(searchResultInfo.exists()).toBe(true);
     });
   });
 
   describe("Casos Especiales", () => {
     it("debería mostrar el mensaje de 'No encontramos nada' si el filtro no coincide", async () => {      
       const wrapper = mount(ArticleList);
-      const store = useArticlesStore();
-      await store.fetchArticles();
       await flushPromises();
 
       await wrapper.find('[data-test="search-input"]').setValue("Busqueda sin resultado");
@@ -89,30 +81,25 @@ describe("ArticlesList - Integración", () => {
       server.use(http.get("*/posts", () => new HttpResponse(null, { status: 500 })));
       
       const wrapper = mount(ArticleList);
-      const store = useArticlesStore();
-      await store.fetchArticles();
       await flushPromises();
 
       expect(wrapper.findComponent({ name: "ErrorAlert" }).exists()).toBe(true);
     });
   });
 
-  it("debería llamar a la acción de seleccionar artículo cuando se pulsa el botón de la tarjeta", async () => {
+  it("debería actualizar el artículo seleccionado en el store al hacer clic en una tarjeta", async () => {
     server.use(http.get("*/posts", () => HttpResponse.json(mockArticles)));
     
     const wrapper = mount(ArticleList);
     const store = useArticlesStore();
-    
-    await store.fetchArticles();
+
     await flushPromises();
 
-    const spy = vi.spyOn(store, "selectArticle");
-
-    const firstCard = wrapper.findComponent({ name: "ArticleCard" });
+    const firstCardButton = wrapper.find('[data-test="article-card"]');
     
-    await firstCard.vm.$emit("select", mockArticles[0]);
+    await firstCardButton.trigger("click");
 
-    expect(spy).toHaveBeenCalledWith(mockArticles[0]);
-    expect(store.selectedArticle).toEqual(mockArticles[0]);
-});
+    expect(store.selectedArticle?.id).toBe(mockArticles[0]!.id);
+    expect(store.selectedArticle?.title).toBe(mockArticles[0]!.title);
+  });
 });

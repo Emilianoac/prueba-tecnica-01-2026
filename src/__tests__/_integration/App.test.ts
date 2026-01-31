@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { nextTick } from "vue";
-import { mount } from "@vue/test-utils";
+import { mount, flushPromises } from "@vue/test-utils";
 import App from "@/App.vue";
 import { useArticlesStore } from "@/stores/articles.store";
 
@@ -8,11 +8,12 @@ describe("App.vue - Integración", () => {
   
   it("debería cargar los artículos al iniciar y mostrar la lista", async () => {
     const store = useArticlesStore();
-    const spy = vi.spyOn(store, "fetchArticles");
-
     const wrapper = mount(App);
 
-    expect(spy).toHaveBeenCalled();
+    await flushPromises();
+
+    expect(store.articles.length).toBeGreaterThan(0);
+    expect(store.loading).toBe(false);
 
     expect(wrapper.findComponent({ name: "ArticlesView" }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: "ArticleDetailView" }).exists()).toBe(false);

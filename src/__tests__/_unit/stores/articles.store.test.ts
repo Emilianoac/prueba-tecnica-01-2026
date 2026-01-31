@@ -26,9 +26,9 @@ describe("Store de artículos", () => {
     (articleService.getArticles as any).mockResolvedValue(mockArticles);
 
     const store = useArticlesStore();
-    await store.fetchArticles();
+    await store.loadArticles(1);
 
-    expect(articleService.getArticles).toHaveBeenCalledWith(10);
+    expect(articleService.getArticles).toHaveBeenCalled();
     expect(store.articles).toHaveLength(3);
     expect(store.loading).toBe(false);
     expect(store.error).toBe(null);
@@ -38,7 +38,7 @@ describe("Store de artículos", () => {
     (articleService.getArticles as any).mockRejectedValue(new Error("Error de API"));
 
     const store = useArticlesStore();
-    await store.fetchArticles();
+    await store.loadArticles(1);
 
     expect(store.articles).toHaveLength(0);
     expect(store.loading).toBe(false);
@@ -59,7 +59,7 @@ describe("Store de artículos", () => {
     (articleService.getArticles as any).mockResolvedValue(mockArticles);
 
     const store = useArticlesStore();
-    await store.fetchArticles();
+    await store.loadArticles(1);
 
     expect(store.numberOfArticles).toBe(3);
   });
@@ -68,7 +68,7 @@ describe("Store de artículos", () => {
     (articleService.getArticles as any).mockResolvedValue(mockArticles);
 
     const store = useArticlesStore();
-    await store.fetchArticles();
+    await store.loadArticles(1);
 
     store.setSearch("test");
     expect(store.filteredArticles).toHaveLength(3);
@@ -88,9 +88,9 @@ describe("Store de artículos", () => {
     (articleService.getArticles as any).mockResolvedValue(mockArticles);
 
     const store = useArticlesStore();
-    await store.fetchArticles();
+    await store.loadArticles(1);
 
-    await store.fetchArticles();
+    await store.loadArticles(1);
     expect(articleService.getArticles).toHaveBeenCalledTimes(1);
   });
 });

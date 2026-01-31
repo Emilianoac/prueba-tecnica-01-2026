@@ -5,6 +5,12 @@ import type { Article } from "@/types/article/article.type";
 export const useArticlesStore = defineStore("articles", {
   state: () => ({
     articles: [] as Article[],
+
+    totalItems: 100,
+    itemsPerPage: 10,
+    currentPage: 1,
+    totalPages: 10,
+
     selectedArticle: null as Article | null,
     search: "",
 
@@ -35,19 +41,26 @@ export const useArticlesStore = defineStore("articles", {
   },
 
   actions: {
-    async fetchArticles() {
-      if (this.articles.length) return;
+    async loadArticles(page: number) {
+      if (this.articles.length > 0 && this.currentPage === page) return;
 
       this.loading = true;
       this.error = null;
+      const start = (page - 1) * this.itemsPerPage;
 
       try {
-        this.articles = await articleService.getArticles(10);
-      } catch {
+        const data = await articleService.getArticles(start, this.itemsPerPage);
+        this.articles = data;
+        this.currentPage = page
+      } catch (e) {
         this.error = "Error cargando artículos";
       } finally {
         this.loading = false;
       }
+    },
+
+    setArticles(articles: Article[]) {
+      this.articles = articles
     },
 
     setSearch(value: string) {

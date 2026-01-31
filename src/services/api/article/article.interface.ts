@@ -1,5 +1,5 @@
 import type { Article } from "@/types/article/article.type";
 
 export interface ArticleService {
-  getArticles(_limit?: number): Promise<Article[]>
+  getArticles(_start?: number, _limit?: number,): Promise<Article[]>
 }
