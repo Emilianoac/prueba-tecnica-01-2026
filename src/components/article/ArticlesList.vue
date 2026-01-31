@@ -26,7 +26,7 @@ const rangeText = computed(() => {
 });
 
 onMounted(() => {
-  store.loadArticles(1);
+  store.loadArticles(store.currentPage);
 })
 </script>
 

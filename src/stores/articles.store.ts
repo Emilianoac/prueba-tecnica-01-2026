@@ -42,7 +42,10 @@ export const useArticlesStore = defineStore("articles", {
 
   actions: {
     async loadArticles(page: number) {
-      if (this.articles.length > 0 && this.currentPage === page) return;
+      const hasValidCache = this.currentPage === page && this.articles.length > 0;
+      const isFetching = this.loading && this.currentPage === page;
+
+      if (hasValidCache || isFetching) return;
 
       this.loading = true;
       this.error = null;
