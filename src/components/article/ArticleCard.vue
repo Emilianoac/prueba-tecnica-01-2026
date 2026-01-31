@@ -27,6 +27,7 @@ const emit = defineEmits<{
   >
     <div class="card-content">
       <div class="text-wrapper">
+        <span class="card-id">ID: {{ article.id }}</span>
         <h3 class="card-title">{{ article.title }}</h3>
         <p class="card-body">{{ article.body }}</p>
         
@@ -63,6 +64,12 @@ const emit = defineEmits<{
 
 .card-content {
   @apply flex justify-between items-start gap-4;
+}
+
+.card-id {
+  @apply text-xs mb-3 block text-slate-400 font-semibold;
+
+  .variant-list & { @apply text-[0.7em]; }
 }
 
 .card-title {

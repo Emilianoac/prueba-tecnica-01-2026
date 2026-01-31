@@ -30,6 +30,9 @@ usePageTitle(dynamicTitle);
       <div class="self-start relative lg:sticky top-auto lg:top-16">
         <section class="bg-white border border-slate-100 p-6 rounded-lg shadow-sm">
           
+          <!--ID-->
+          <span class="text-xs mb-3 block text-slate-400 font-semibold">ID: {{ store.selectedArticle.id }}</span>
+          
           <!-- Título -->
           <h1 class="font-bold text-xl md:text-2xl mb-2 first-letter:uppercase">{{ store.selectedArticle.title }}</h1>
           
