@@ -6,6 +6,7 @@ import MainHeader from "@/components/ui/MainHeader.vue";
 import MainFooter from "@/components/ui/MainFooter.vue";
 import ArticlesView from "@/views/ArticlesView.vue";
 import ArticleDetailView from "@/views/ArticleDetailView.vue";
+import ArticleHistory from "./components/article/ArticleHistory.vue";
 
 const store = useArticlesStore();
 
@@ -25,6 +26,7 @@ const scrollToTop = () => {
     </div>
     <MainFooter/>
   </main>
+  <ArticleHistory/>
 </template>
 
 <style>

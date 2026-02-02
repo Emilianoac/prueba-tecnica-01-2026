@@ -3,3 +3,9 @@ export interface Article {
   title: string;
   body: string
 }
+
+export interface ArticleHistoryItem {
+  id: string
+  article: Article
+  visitedAt: number
+}

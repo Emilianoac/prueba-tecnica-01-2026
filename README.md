@@ -14,6 +14,7 @@ Previsualización: https://emilianoac.github.io/prueba-tecnica-01-2026
 * **Gestión de estados:** Control de estados de carga y error.
 * **Persistencia de búsqueda:** El estado de los filtros se mantiene íntegro al navegar entre vistas.
 * **Navegación por estado:** Cambio de vistas controlado mediante lógica de estado global.
+* **Historial de visitas:** Registro de artículos visitados con persistencia local.
 
 ---
 

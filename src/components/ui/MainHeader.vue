@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { Icon } from "@iconify/vue";
+import { useArticlesStore } from "@/stores/articles.store";
+
+const store = useArticlesStore();
 </script>
 
 <template>
@@ -11,9 +14,12 @@ import { Icon } from "@iconify/vue";
       </span>
 
       <div class="flex gap-3">
-        <a href="https://github.com/Emilianoac/prueba-tecnica-01-2026" class="text-blue-500 hover:text-blue-700 transition-colors">
-          <Icon icon="mdi:github" width="20" height="20" />
-        </a>
+        <button 
+          @click="store.setShowHistory(true)"
+          class=" flex items-center gap-1 group hover:opacity-90">
+          <Icon class="text-blue-500 group-hover:text-blue-700 transition-colors" icon="mdi:history" width="20" height="20" /> 
+          <span class="text-sm">Historial de visitas</span>
+        </button>
       </div>
     </div>
   </header>

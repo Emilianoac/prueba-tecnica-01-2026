@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { articleService } from "@/services/api/article/articleService";
-import type { Article } from "@/types/article/article.type";
+import { localStorageService } from "@/services/local-storage/localStorageService";
+import type { Article, ArticleHistoryItem } from "@/types/article/article.type";
 
 export const useArticlesStore = defineStore("articles", {
   state: () => ({
@@ -13,6 +14,9 @@ export const useArticlesStore = defineStore("articles", {
 
     selectedArticle: null as Article | null,
     search: "",
+
+    history: [] as ArticleHistoryItem[],
+    showHistory: false,
 
     loading: false,
     error: null as string | null
@@ -76,10 +80,38 @@ export const useArticlesStore = defineStore("articles", {
 
     selectArticle(article: Article) {
       this.selectedArticle = article;
+      this.addToHistory(article);
     },
 
     clearSelectedArticle() {
       this.selectedArticle = null;
+    },
+
+    loadHistory() {
+      if (!this.history.length) {
+        this.history = localStorageService.load<ArticleHistoryItem[]>('articles-history') ?? []
+      }
+    },
+
+    setShowHistory(status: boolean) {
+      this.showHistory = status;
+    },
+
+    addToHistory(article: Article) {
+      const KEY = "articles-history";
+      const MAX = 10;
+
+      const now = Date.now();
+
+      const entry = {
+        article,
+        visitedAt: now,
+        id: `article-${now}-${article.id}`
+      }
+
+      this.history = [entry,...this.history].slice(0, MAX);
+
+      localStorageService.save(KEY, this.history);
     }
   }
 });
